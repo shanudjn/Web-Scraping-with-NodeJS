@@ -24,8 +24,11 @@ if (process.argv[2] !== undefined) {
                         content
                             .then((success) => {
                                 const $ = cheerio.load(success)
-                                const textExtracted = $('.actor-name').text();
-                                console.log(textExtracted);
+                                const div = $('.search-results__list');                                
+                                console.log(div.attr('class'));
+                                var targetUrl = div.children().children().children().children('.search-result__info', '.pt3', '.pb4', '.ph0').children();                                                               
+                                console.log(targetUrl.attr('class'));
+                                console.log(targetUrl.attr('href'));
                             })
                     })
             })
