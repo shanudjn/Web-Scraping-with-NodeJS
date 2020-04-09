@@ -8,8 +8,7 @@ const SUBMIT_SELECTOR =
   "#app__container > main > div > form > div.login__form_action_container > button";
 const LINKEDIN_LOGIN_URL =
   "https://www.linkedin.com/login?fromSignIn=true&trk=guest_homepage-basic_nav-header-signin";
-const SEARCH_STRING =
-  process.argv[2] + " " + process.argv[3] + " " + process.argv[4];
+const SEARCH_STRING = process.argv[2]
 var links = [];
 
 var page;
@@ -31,6 +30,31 @@ const autoScroll = async page => {
     });
   });
 };
+
+async function getPage() {
+  const content = page.content();
+
+  return content.then(success => {
+    const $ = cheerio.load(success);
+    let divClass = $(".search-results__list").find("li");
+    //console.log(divClass.attr('class'));
+    let listLength = divClass.length;
+    //console.log(listLength);
+
+    divClass.each(function(i, element) {
+      const targetUl = $(element).find(".search-result__info,.pt3, .pb4, .ph0");
+      //console.log(targetUl.attr('class'));
+      const name = $(targetUl)
+        .find(".name, .actor-name")
+        .text();
+      const link = $(targetUl)
+        .find("a")
+        .attr("href");
+      links.push(link);
+    });
+    return links;
+  });
+}
 
 //main
 if (process.argv[2] !== undefined) {
@@ -57,9 +81,20 @@ if (process.argv[2] !== undefined) {
 
         var data = await getPage();
 
+        // for (let i = 0; i < data.length; i++) {
+        //   console.log("Link " + i + " : " + data[i]);
+        // }
         for (let i = 0; i < data.length; i++) {
-          console.log("Link " + i + " : " + data[i]);
-        }
+           console.log("Link " + i + " : " + data[i]);
+          let newPage = await browser.newPage();
+          let newurl = 'https://www.linkedin.com' + data[i];
+          await newPage.goto(newurl, { waitUntil: "networkidle2" });
+          let childHtml = await newPage.content();
+          fs.writeFile(`file${i}.txt`, childHtml);
+          //console.log(childHtml);
+          newPage.close();
+      }
+        browser.close()
       })
       .catch(err => {
         console.log(" CAUGHT WITH AN ERROR ", err);
@@ -67,27 +102,4 @@ if (process.argv[2] !== undefined) {
   })();
 }
 
-async function getPage() {
-  const content = page.content();
 
-  return content.then(success => {
-    const $ = cheerio.load(success);
-    let divClass = $(".search-results__list").find("li");
-    //console.log(divClass.attr('class'));
-    let listLength = divClass.length;
-    //console.log(listLength);
-
-    divClass.each(function(i, element) {
-      const targetUl = $(element).find(".search-result__info,.pt3, .pb4, .ph0");
-      //console.log(targetUl.attr('class'));
-      const name = $(targetUl)
-        .find(".name, .actor-name")
-        .text();
-      const link = $(targetUl)
-        .find("a")
-        .attr("href");
-      links.push(link);
-    });
-    return links;
-  });
-}
