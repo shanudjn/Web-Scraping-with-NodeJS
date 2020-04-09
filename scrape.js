@@ -1,7 +1,6 @@
 let puppeteer = require("puppeteer");
 let cheerio = require("cheerio");
-let scroll = require("puppeteer-autoscroll-down");
-
+let fs = require("filr-system")
 const EMAIL_SELECTOR = "#username";
 const PASSWORD_SELECTOR = "#password";
 const SUBMIT_SELECTOR =
