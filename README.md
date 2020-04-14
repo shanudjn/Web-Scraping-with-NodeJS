@@ -1,5 +1,5 @@
 # Web-Scraping-with-NodeJS
-## Goals of this project
+## Goal of this project
   The project tries to scrape LinkedIn for the top 10 profile based on the search string which the user provides. Each of the profiles are saved in the form a .txt file.  
 ## Steps to use the project
 1. Clone the repository into your local machine.
