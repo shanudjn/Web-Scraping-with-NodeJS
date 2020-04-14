@@ -11,10 +11,10 @@
     * automate form submission
     * generate pdf of web pagee and many more.
 4. To install puppeteer, in the terminal go to your project directory<br/> 
-    `cd your-project-directory/Web-Scraping-with-NodeJS`
+    `cd your-project-directory/Web-Scraping-with-NodeJS`<br/>
     `npm install puppeteer`
 5. After installing puppeteer, we need to install cheerio, which is a jquery library mainly used for DOM Manipulation.
-6. To install cheerio inside your project directory, run the following
+6. To install cheerio inside your project directory, run the following<br/>
     `npm install cheerio`
 7. To save each of the profiles in the form of .txt files, we need to interact with the file system of our operating system. To achieve this we use the node.js file system module. To install type inside your project directory
     `npm install file-system`
