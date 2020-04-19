@@ -14,7 +14,7 @@ const LINKEDIN_LOGIN_URL =
 const SEARCH_STRING =
   process.argv[2]; /*+ " " + process.argv[3] + " " + process.argv[4];*/
 
-
+//helper function to scroll the target page
 const autoScroll = async (page) => {
   await page.evaluate(async () => {
     await new Promise((resolve, reject) => {
@@ -33,7 +33,8 @@ const autoScroll = async (page) => {
   });
 };
 
-async function getPage() {
+//helper function get the profile links from the target page 
+async function getDataFromPage() {
   const content = page.content();
   return content
     .then((success) => {
@@ -81,18 +82,11 @@ if (process.argv[2] !== undefined) {
 
         await autoScroll(page);
 
-        var data = await getPage();
-
-        //console.log("Link " + i + " : " + data[0]);
-        // let newPage = await browser.newPage();
-        // let newurl = 'https://www.linkedin.com' + data[0];
-        // await newPage.goto(newurl,  { waitUntil: "networkidle2" });
-        // let childHtml = await newPage.content();
-        // fs.writeFile("file1.html",childHtml);
-        // console.log(childHtml);
-
+        var data = await getDataFromPage();      
+      
+        //loop through each profile links and save the profile page as a txt file inside project directory.
         for (let i = 0; i < data.length; i++) {
-          console.log("Link " + i + " : " + data[i]);
+          //console.log("Link " + i + " : " + data[i]);
           let newPage = await browser.newPage();
           let newurl = "https://www.linkedin.com" + data[i];
           await newPage.goto(newurl, { waitUntil: "networkidle2" });
